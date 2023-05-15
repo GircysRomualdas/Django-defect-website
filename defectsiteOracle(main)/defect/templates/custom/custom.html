@@ -1,0 +1,35 @@
+{% extends 'home.html' %}
+
+{% block content %}
+
+    <h1>Custom</h1>
+
+    <div style="display: flex;">
+        <table class="table table-hover m-2" style="height: 30px;">
+            <tr>
+                <th>Name</th>
+            </tr >
+            <tbody id="sortable1" class="connectedSortable">
+                {% for x in locations %}
+                <tr class="ui-state-default">    
+                    <td>{{x.sName}}</td>   
+                </tr>
+                {% endfor %} 
+            </tbody>
+        </table>
+    
+        <table class="table table-hover m-2" style="height: 30px;">
+            <tr>
+                <th>Name</th>
+            </tr >
+            <tbody id="sortable2" class="connectedSortable">
+                {% for x in type %}
+                <tr class="ui-state-default">    
+                    <td>{{x.sName}}</td>   
+                </tr>
+                {% endfor %} 
+            </tbody> 
+        </table>
+    </div>
+
+{% endblock content %}

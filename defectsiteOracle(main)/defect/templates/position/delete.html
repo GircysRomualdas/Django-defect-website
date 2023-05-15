@@ -1,0 +1,14 @@
+{% extends 'home.html' %}
+
+{% block content %}
+
+        <p>Are you sure you want to delete ?</p>
+        <p><b>ID:</b>{{position.nID}} <br> <b>Name:</b>{{position.sName}}</p>
+        <p><b>Discription:</b> <br> {{position.sDescription}}</p>
+        <form action="" method="POST">
+            <a href="{% url 'defect:allPositionsView' %}"><button class="btn btn-outline-secondary my-2" type="button">Cancel</button></a>
+            {% csrf_token %}
+            <button class="btn btn-outline-secondary my-2" type="submit">Delete</button>
+        </form>
+
+{% endblock content %}

@@ -1,0 +1,29 @@
+{% extends 'home.html' %}
+
+{% block content %}
+
+    <h1>Position</h1>
+    <a href="{% url 'defect:createPositionView' %}"><button class="btn btn-outline-secondary my-2" type="button">Create Position</button></a>
+
+    <form class="input-group" action="{% url 'defect:searchPositionView' %}" method="get">
+        <input class="form-control m-1" name="q" type="text" placeholder="Search...">
+    </form>
+
+    <table class="table table-striped table-hover">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th></th>
+            <th></th>
+        </tr>
+        {% for x in position %}
+        <tr>
+            <td>{{x.sName}}</td>
+            <td>{{x.sDescription}}</td>
+            <td> <a href="{% url 'defect:updatePositionView' x.nID %}"><button class="btn btn-outline-secondary my-2" type="button">Update</button></a> </td>
+            <td> <a href="{% url 'defect:deletePositionView' x.nID %}"><button class="btn btn-outline-secondary my-2" type="button">Delete</button></a> </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% endblock content %}

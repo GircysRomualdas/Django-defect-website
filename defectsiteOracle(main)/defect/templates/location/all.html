@@ -1,0 +1,29 @@
+{% extends 'home.html' %}
+
+{% block content %}
+
+    <h1>Locations</h1>
+    <a href="{% url 'defect:createLocationView' %}"><button class="btn btn-outline-secondary my-2" type="button">Create Location</button></a>
+
+    <form class="input-group" action="{% url 'defect:searchLocationView' %}" method="get">
+        <input class="form-control m-1" name="q" type="text" placeholder="Search...">
+    </form>
+
+    <table class="table table-hover">   
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th></th>
+            <th></th>
+        </tr >
+        {% for x in locations %}
+        <tr>    
+            <td>{{x.sName}}</td>
+            <td>{{x.sDescription}}</td>
+            <td> <a href="{% url 'defect:updateLocationView' x.nID %}"><button class="btn btn-outline-secondary my-2" type="button">Update</button></a> </td>
+            <td> <a href="{% url 'defect:deleteLocationView' x.nID %}"><button class="btn btn-outline-secondary my-2" type="button">Delete</button></a> </td>    
+        </tr>
+        {% endfor %}
+    </table>
+
+{% endblock content %}

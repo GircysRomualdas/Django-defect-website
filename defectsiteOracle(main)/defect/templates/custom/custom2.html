@@ -1,0 +1,40 @@
+{% extends 'home.html' %}
+
+{% block content %}
+
+    <h1>Custom</h1>
+
+    {% csrf_token %}
+    <button class="btn btn-outline-secondary m-2" type="submit">Add</button>
+
+    <div style="display: flex;">
+        <table class="table table-hover m-2" style="height: 30px;">
+            <tr>
+                <th>Location</th>
+            </tr >
+            {% for x in locations %}
+            <tr>    
+                <td>
+                    {{x.sName}}
+                    <input type="checkbox">
+                </td> 
+            </tr>
+            {% endfor %} 
+        </table>
+
+        <table class="table table-hover m-2" style="height: 30px;">
+            <tr>
+                <th>Type</th>
+            </tr >
+            {% for x in type %}
+            <tr>    
+                <td>
+                    {{x.sName}}
+                    <input type="checkbox">
+                </td>   
+            </tr>
+            {% endfor %} 
+        </table>
+    </div>
+
+{% endblock content %}
