@@ -1,0 +1,43 @@
+{% extends 'home.html' %}
+
+{% block content %}
+
+    <h1>Hierarchy</h1>
+
+    <form class="input-group" action="{% url 'defect:searchHierarchicaView' %}" method="get">
+        <input class="form-control m-1" name="q" type="text" placeholder="Search...">
+    </form>
+
+    <div>
+        <table class="table table-hover m-2" style="height: 30px;">
+            {% for loca in locations %}
+                <tr>
+                    <td>
+                        {{loca.sName}}
+                        <div class="ml-5">
+                            {% for loty in locationTypes %}
+                                {% for type in types %}
+                                    {% if loca.nID == loty.nLocationID_id and loty.nTypeID_id == type.nID %}
+                                        {{type.sName}}
+                                        <div class="ml-5">
+                                            {% for typo in typePositions %}
+                                                {% for posi in positions %}
+                                                    {% if type.nID == typo.nTypeID_id and typo.nPositionID_id == posi.nID %}
+                                                        {{posi.sName}}
+                                                        <br>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endfor %}
+                                        </div>
+
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+{% endblock content %}

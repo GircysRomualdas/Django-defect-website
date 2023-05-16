@@ -3,8 +3,18 @@ from django.template import loader
 from django.http import HttpResponse
 from django.db.models import Q
 
-from .models import Location, Type, Position, LocationType
-from .forms import LocationForm, TypeForm, PositionForm, LocationTypeForm
+from .models import ( 
+    Location, 
+    Type, 
+    Position, 
+    LocationType,
+    TypePosition, 
+    )
+from .forms import ( 
+    LocationForm, 
+    TypeForm, 
+    PositionForm, 
+    )
 
 from django import forms
 
@@ -172,7 +182,7 @@ def searchPositionView(request):
 
 # position view end
 
-# custom view start
+# custom view start temp
 def customView(request):
     locations = Location.objects.all().values()
     type = Type.objects.all().values()
@@ -182,18 +192,48 @@ def customView(request):
         }
     return render(request, 'custom/custom.html', context)
 
-def custom2View(request):
-    locations = Location.objects.all().values()
-    type = Type.objects.all().values()
-    locationType = LocationType.objects.all().values()
-    context = { 
-        'locations': locations, 
-        'type': type,
-        'locationType': locationType,
-        }
-    return render(request, 'custom/custom2.html', context)
+# custom view end temp
 
-# custom view end
+# Hierarchy view start
+def hierarchicalView(request):
+    
+    locations = Location.objects.all().values()
+    locationTypes = LocationType.objects.all().values()
+    types = Type.objects.all().values()
+    typePositions = TypePosition.objects.all().values()
+    positions = Position.objects.all().values()
+
+    context = { 
+        'locations': locations,
+        'locationTypes': locationTypes,
+        'types': types,
+        'typePositions': typePositions,
+        'positions': positions,
+        }
+    return render(request, 'custom/hierarchy.html', context)
+
+def searchHierarchicaView(request):
+
+    query = request.GET.get("q")
+    locations = Location.objects.filter(
+        Q(nID__icontains=query) | Q(sName__icontains=query)
+    ).values()
+
+    locationTypes = LocationType.objects.all().values()
+    types = Type.objects.all().values()
+    typePositions = TypePosition.objects.all().values()
+    positions = Position.objects.all().values()
+
+    context = { 
+        'locations': locations,
+        'locationTypes': locationTypes,
+        'types': types,
+        'typePositions': typePositions,
+        'positions': positions,
+        }
+    return render(request, 'custom/hierarchy.html', context)
+
+# Hierarchy view end
 
 
 
