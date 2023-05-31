@@ -2,28 +2,30 @@
 
 {% block content %}
 
-    <h1>Types</h1>
-    <a href="{% url 'defect:createTypeView' %}"><button class="btn btn-outline-secondary my-2" type="button">Create Type</button></a>
+{% load crispy_forms_tags %}
+    <h1>Position "{{position.sName}}" Assign Parent</h1>
 
-    <form class="input-group" action="{% url 'defect:searchTypeView' %}" method="get">
-        <input class="form-control m-1" name="q" type="text" placeholder="Search...">
+    <form class="input-group" action="{% url 'defect:searchAssignPositionParentView' position.nID %}" method="get">
+        <input class="form-control m-1" name="q" type="text" placeholder="Search..." value="{{query}}">
     </form>
-    
-    <table class="table table-hover">
+
+    <table class="table table-hover">   
         <tr>
             <th>Name</th>
             <th>Description</th>
             <th style="width: 80px;"></th>
-            <th style="width: 80px;"></th>
-            <th style="width: 80px;"></th>
-        </tr>
+        </tr >
         {% for x in page_obj %}
         <tr>
             <td>{{x.sName}}</td>
             <td>{{x.sDescription}}</td>
-            <td class="p-0 pl-1"> <a href="{% url 'defect:assignTypePositionView' x.nID %}"><button class="btn btn-outline-secondary my-2" type="button">Assign</button></a> </td>
-            <td class="p-0 pl-1"> <a href="{% url 'defect:updateTypeView' x.nID %}"><button class="btn btn-outline-secondary my-2" type="button">Update</button></a> </td>
-            <td class="p-0 pl-1"> <a href="{% url 'defect:deleteTypeView' x.nID %}"><button class="btn btn-outline-secondary my-2"  type="button">Delete</button></a> </td>
+
+            {% if x.nID == position.nParentID.nID %}
+                <td class="p-0 pl-1"> <a href="{% url 'defect:removePositionParentView' position.nID %}"><button class="btn btn-outline-secondary my-2" type="button">Remove</button></a> </td>
+            {% else %}
+                <td class="p-0 pl-1"> <a href="{% url 'defect:addPositionParentView' position.nID x.nID %}"><button class="btn btn-outline-secondary my-2" type="button">Assign</button></a> </td>
+            {% endif %}
+
         </tr>
         {% endfor %}
     </table>

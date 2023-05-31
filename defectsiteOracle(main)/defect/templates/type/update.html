@@ -4,11 +4,12 @@
 
 {% load crispy_forms_tags %}
 
-    <h1>Type</h1>
+    <h1>Type Update</h1>
     <form action="" method="post">
         <div class="form-group m-2">
             {% csrf_token %}
             {{form|crispy}}
+            <a href="{% url 'defect:allTypesView' %}"><button class="btn btn-outline-secondary my-2" type="button">Cancel</button></a>
             <button class="btn btn-outline-secondary m-2" type="submit">Update</button>
         </div>
     </form>

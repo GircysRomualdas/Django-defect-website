@@ -6,24 +6,44 @@
     <a href="{% url 'defect:createLocationView' %}"><button class="btn btn-outline-secondary my-2" type="button">Create Location</button></a>
 
     <form class="input-group" action="{% url 'defect:searchLocationView' %}" method="get">
-        <input class="form-control m-1" name="q" type="text" placeholder="Search...">
+        <input class="form-control m-1" name="q" type="text" placeholder="Search..." value="{{query}}">
     </form>
 
     <table class="table table-hover">   
         <tr>
             <th>Name</th>
             <th>Description</th>
-            <th></th>
-            <th></th>
+            <th style="width: 80px;"></th>
+            <th style="width: 80px;"></th>
+            <th style="width: 80px;"></th>
         </tr >
-        {% for x in locations %}
-        <tr>    
+        {% for x in page_obj %}
+        <tr>
             <td>{{x.sName}}</td>
             <td>{{x.sDescription}}</td>
-            <td> <a href="{% url 'defect:updateLocationView' x.nID %}"><button class="btn btn-outline-secondary my-2" type="button">Update</button></a> </td>
-            <td> <a href="{% url 'defect:deleteLocationView' x.nID %}"><button class="btn btn-outline-secondary my-2" type="button">Delete</button></a> </td>    
+            <td class="p-0 pl-1"> <a href="{% url 'defect:assignLocationTypeView' x.nID %}"><button class="btn btn-outline-secondary my-2" type="button">Assign</button></a> </td>
+            <td class="p-0 pl-1"> <a href="{% url 'defect:updateLocationView' x.nID %}"><button class="btn btn-outline-secondary my-2" type="button">Update</button></a> </td>
+            <td class="p-0 pl-1"> <a href="{% url 'defect:deleteLocationView' x.nID %}"><button class="btn btn-outline-secondary my-2" type="button">Delete</button></a> </td>    
         </tr>
         {% endfor %}
     </table>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1&q={{ query }}">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}&q={{ query }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+    
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&q={{ query }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}&q={{ query }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
 
 {% endblock content %}
