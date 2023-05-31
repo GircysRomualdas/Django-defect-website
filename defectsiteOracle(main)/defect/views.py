@@ -125,6 +125,47 @@ def assignLocationTypeView(request, id):
         }
     return render(request, 'location/assign_type.html', context)
 
+def allAssignLocationTypeView(request, id):
+    location = Location.objects.get(nID=id)
+    assigned = LocationType.objects.filter(nLocationID=id).values_list('nTypeID', flat = True)
+    type = Type.objects.filter(nID__in=assigned)
+
+    paginator = Paginator(type, PER_PAGE)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'location': location,
+        'lid': id,
+        'page_obj': page_obj,
+        'assigned': assigned,
+        }
+    return render(request, 'location/assign_type.html', context)
+
+def searchAllAssignLocationTypeView(request, id):
+    location = Location.objects.get(nID=id)
+    assigned = LocationType.objects.filter(nLocationID=id).values_list('nTypeID', flat = True)
+    types = Type.objects.filter(nID__in=assigned)
+
+    query = request.GET.get("q")
+    type = types.filter(
+        Q(nID__icontains=query) | Q(sName__icontains=query) | Q(sDescription__icontains=query)
+    )
+    
+    paginator = Paginator(type, PER_PAGE)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'location': location,
+        'lid': id,
+        'page_obj': page_obj,
+        'assigned': assigned,
+        'query': query,
+        }
+    return render(request, 'location/assign_type.html', context)
+
+
 def addLocationTypeView(request, lid, tid):
     assigned = LocationType.objects.filter(nLocationID=lid).values_list('nTypeID', flat = True)
     if tid in assigned:
@@ -172,6 +213,24 @@ def searchAssignLocationParentView(request, id):
 def assignLocationParentView(request, id):
     location = Location.objects.get(nID=id)
     locations = Location.objects.all().exclude(nID=id)
+    paginator = Paginator(locations, PER_PAGE)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'location': location,
+        'page_obj': page_obj,
+        }
+    return render(request, 'location/assign_parent.html', context)
+
+def allAssignLocationParentView(request, id):
+    location = Location.objects.get(nID=id)
+
+    if location.nParentID == None:
+        locations = Location.objects.filter(nID=id).exclude(nID=id)
+    else:
+        locations = Location.objects.filter(nID=location.nParentID.nID)
+
     paginator = Paginator(locations, PER_PAGE)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -285,6 +344,47 @@ def assignTypePositionView(request, id):
         }
     return render(request, 'type/assign_position.html', context)
 
+def allAssignTypePositionView(request, id):
+    type = Type.objects.get(nID=id)
+    assigned = TypePosition.objects.filter(nTypeID=id).values_list('nPositionID', flat = True)
+    position = Position.objects.filter(nID__in=assigned)
+
+    paginator = Paginator(position, PER_PAGE)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'type': type,
+        'tid': id,
+        'page_obj': page_obj,
+        'assigned': assigned,
+        }
+    return render(request, 'type/assign_position.html', context)
+
+def searchAllAssignTypePositionView(request, id):
+    type = Type.objects.get(nID=id)
+    assigned = TypePosition.objects.filter(nTypeID=id).values_list('nPositionID', flat = True)
+    positions = Position.objects.filter(nID__in=assigned)
+
+    query = request.GET.get("q")
+    position = positions.filter(
+        Q(nID__icontains=query) | Q(sName__icontains=query) | Q(sDescription__icontains=query)
+    )
+
+    paginator = Paginator(position, PER_PAGE)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'type': type,
+        'tid': id,
+        'page_obj': page_obj,
+        'assigned': assigned,
+        'query': query,
+        }
+    return render(request, 'type/assign_position.html', context)
+
+
 def searchAssignTypePositionView(request, id):
     type = Type.objects.get(nID=id)
     assigned = TypePosition.objects.filter(nTypeID=id).values_list('nPositionID', flat = True)
@@ -335,6 +435,26 @@ def removeTypePositionView(request, tid, pid):
 def assignTypeParentView(request, id):
     type = Type.objects.get(nID=id)
     types = Type.objects.all().exclude(nID=id)
+
+    paginator = Paginator(types, PER_PAGE)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'type': type,
+        'page_obj': page_obj,
+    }
+
+    return render(request, 'type/assign_parent.html', context)
+
+def allAssignTypeParentView(request, id):
+    type = Type.objects.get(nID=id)
+
+    if type.nParentID == None:
+        types = Type.objects.filter(nID=id).exclude(nID=id)
+    else:
+        types = Type.objects.filter(nID=type.nParentID.nID)
+
     paginator = Paginator(types, PER_PAGE)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -453,6 +573,25 @@ def searchPositionView(request):
 def assignPositionParentView(request, id):
     position = Position.objects.get(nID=id)
     positions = Position.objects.all().exclude(nID=id)
+    paginator = Paginator(positions, PER_PAGE)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'position': position,
+        'page_obj': page_obj,
+    }
+
+    return render(request, 'position/assign_parent.html', context)
+
+def allAssignPositionParentView(request, id):
+    position = Position.objects.get(nID=id)
+
+    if position.nParentID == None:
+        positions = Position.objects.filter(nID=id).exclude(nID=id)
+    else:
+        positions = Position.objects.filter(nID=position.nParentID.nID)
+
     paginator = Paginator(positions, PER_PAGE)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)

@@ -6,9 +6,14 @@
     <h1>Type "{{type.sName}}" Assign Parent</h1>
     <a href="{% url 'defect:assignTypePositionView' type.nID %}"><button class="btn btn-outline-secondary my-2" type="button">Assign Position</button></a>
 
-    <form class="input-group" action="{% url 'defect:searchAssignTypeParentView' type.nID %}" method="get">
-        <input class="form-control m-1" name="q" type="text" placeholder="Search..." value="{{query}}">
-    </form>
+    {% if 'assigned' in request.META.PATH_INFO %}
+        <a style="float: right;" href="{% url 'defect:assignTypeParentView' type.nID %}"><button class="btn btn-outline-secondary my-2" type="button">All Parents</button></a>
+    {% else %}
+        <a style="float: right;" href="{% url 'defect:allAssignTypeParentView' type.nID %}"><button class="btn btn-outline-secondary my-2" type="button">Assigned Parent</button></a>
+        <form class="input-group" action="{% url 'defect:searchAssignTypeParentView' type.nID %}" method="get">
+            <input class="form-control m-1" name="q" type="text" placeholder="Search..." value="{{query}}">
+        </form>
+    {% endif %}
 
     <table class="table table-hover">   
         <tr>

@@ -6,9 +6,17 @@
     <h1>Location "{{location.sName}}" Assign Type</h1>
     <a href="{% url 'defect:assignLocationParentView' location.nID %}"><button class="btn btn-outline-secondary my-2" type="button">Assign Parent</button></a>
 
-    <form class="input-group" action="{% url 'defect:searchAssignLocationTypeView' lid %}" method="get">
-        <input class="form-control m-1" name="q" type="text" placeholder="Search..." value="{{query}}">
-    </form>
+    {% if 'assigned' in request.META.PATH_INFO %}
+        <a style="float: right;" href="{% url 'defect:assignLocationTypeView' location.nID %}"><button class="btn btn-outline-secondary my-2" type="button">All Types</button></a>
+        <form class="input-group" action="{% url 'defect:searchAllAssignLocationTypeView' lid %}" method="get">
+            <input class="form-control m-1" name="q" type="text" placeholder="Search..." value="{{query}}">
+        </form>
+    {% else %}
+        <a style="float: right;" href="{% url 'defect:allAssignLocationTypeView' location.nID %}"><button class="btn btn-outline-secondary my-2" type="button">All Assigned Types</button></a>
+        <form class="input-group" action="{% url 'defect:searchAssignLocationTypeView' lid %}" method="get">
+            <input class="form-control m-1" name="q" type="text" placeholder="Search..." value="{{query}}">
+        </form>
+    {% endif %}
 
     <table class="table table-hover">   
         <tr>
